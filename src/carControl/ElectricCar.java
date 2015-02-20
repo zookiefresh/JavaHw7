@@ -11,35 +11,58 @@ package carControl;
  */
 public class ElectricCar implements CarControl {    
     
-    private String powered;
+    private boolean powered;
     private int direction;
     private int speed;
     
     ElectricCar(){
         speed = 0;
-        direction = 365;
+        direction = 360;
     }
     
+    @Override
     public void powerOn(){
-        powered = "On";
+        powered = true;
+        speed = 0;
     }
+    
+    @Override
     public void powerOff(){
-        powered = "Off";
+        powered = false;
+        speed = 0;
     }
     
+    @Override
     public void turnRight(){
-        direction = direction - 5; 
+        direction = direction + 5; 
     }
     
+    @Override
     public void turnLeft(){
-        direction = direction + 5;        
+        direction = direction - 5;        
     }
     
+    @Override
     public void goFaster(){
         speed += 5;        
     }
     
+    @Override
     public void slowDown(){
         speed -= 5;
+    }
+    
+    @Override
+    public String toString(){
+        if (!powered){
+            return "car is powered off";
+        }
+        
+        else if (speed == 0){
+            return "car is stopped";
+        }        
+        
+        return "car travels in " + direction + " deg at the speed of " + speed + " mph";
+        
     }
 }
