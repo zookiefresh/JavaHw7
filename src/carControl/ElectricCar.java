@@ -12,44 +12,73 @@ package carControl;
 public class ElectricCar implements CarControl {    
     
     private boolean powered;
-    private int direction;
+    private int angle;
     private int speed;
     
+    final static private int maxSpeed = 100;
+    final static private int minSpeed = 0;
+    final static private int speedStep = 2;
+    
+    final static private int minAngle = 0;
+    final static private int maxAngle = 360;
+    final static private int angleStep = 5;
+    
     ElectricCar(){
-        speed = 0;
-        direction = 360;
+        speed = minSpeed;
+        angle = minAngle;
+        powered = false;
     }
     
     @Override
     public void powerOn(){
         powered = true;
-        speed = 0;
+        speed = minSpeed;
     }
     
     @Override
     public void powerOff(){
         powered = false;
-        speed = 0;
+        speed = minSpeed;
     }
     
     @Override
     public void turnRight(){
-        direction = direction + 5; 
+        if(powered){
+            angle = angle + angleStep;           
+            angle = angle % maxAngle;        
+        }
+        
     }
     
     @Override
     public void turnLeft(){
-        direction = direction - 5;        
+        if(powered){
+            angle = angle - angleStep;            
+            angle = ((angle + maxAngle) % maxAngle);
+            if (angle < minAngle){
+                angle = angle + maxAngle;        
+            }
+        }
     }
     
     @Override
     public void goFaster(){
-        speed += 5;        
+        if(powered){            
+            speed += speedStep;        
+            if (speed > maxSpeed){
+                speed = maxSpeed;
+            }
+        }
     }
     
     @Override
     public void slowDown(){
-        speed -= 5;
+        if(powered){
+            speed -= speedStep;
+            if(speed < minSpeed){
+                speed = minSpeed;
+            }
+        }
     }
     
     @Override
@@ -62,7 +91,8 @@ public class ElectricCar implements CarControl {
             return "car is stopped";
         }        
         
-        return "car travels in " + direction + " deg at the speed of " + speed + " mph";
+        return "car travels in " + angle + " deg at the speed of " 
+                + speed + " mph";
         
     }
 }
